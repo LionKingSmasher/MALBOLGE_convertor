@@ -1,7 +1,12 @@
 <?php
 
+include 'compile.php';
+
 ################입력하는 곳###################
-$input = "";
+$input_file = fopen($argv[1], "r");
+$input = fread($input_file, filesize($argv[1]));
+fclose($input_file);
+$output = fopen($argv[2], "w");
 /*
     ROT: *
     CRZ: p
@@ -28,6 +33,8 @@ $tty = fopen('/dev/tty', 'w'); #현재 콘솔 장치를 의미
 $t = Array();
 
 $cnt = 0;
+
+#fprintf($tty, "%s", $input);
 
 if($tty){
 #   fprintf($tty, "test");
@@ -63,7 +70,9 @@ if($tty){
                   $NONE))))))));
             return str_split($in);
         })($regex))[$cnt++ % 94]);
+        fprintf($output, "%s", $t[($cnt-1) % 94]);
     }
     fprintf($tty, "\n");
+    compile_malbolge($tty);
 }
 ?>
